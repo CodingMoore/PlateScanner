@@ -68,6 +68,10 @@ namespace PlateScanner
                 //viewer.Image = binaryAllContoursPlateMat;
                 //viewer.ShowDialog();
 
+                ApiCallObject apiCall = new ApiCallObject("https://skyserver.sdss.org/dr16/SkyServerWS/SearchTools/SqlSearch?cmd=select%20top%2010%20ra,dec%20from%20Frame", "");
+                //ApiCallObject apiCall = new ApiCallObject("https://jsonplaceholder.typicode.com/", "todos/1");
+
+                apiCall.MakeTheApiCall();
             }
 
             Console.WriteLine("Program Finished");
