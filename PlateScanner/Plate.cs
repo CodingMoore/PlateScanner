@@ -282,8 +282,6 @@ namespace PlateScanner
                 //    radius = 3;
                 //}
 
-                
-
                 // creates a small circle around the shape's centroid
                 CvInvoke.Circle(outputMat, new Point(x, y), radius, new MCvScalar(100, 100, 100), -1, LineType.EightConnected, 0);
                 //CvInvoke.Circle(binaryPlateImage, new Point(x, y), radius, new MCvScalar(100, 100, 100), -1, LineType.EightConnected, 0);
@@ -384,61 +382,3 @@ namespace PlateScanner
 
     }
 }
-
-//Mat svgMat = new Mat();
-//VectorOfVectorOfPoint svgContours = new VectorOfVectorOfPoint();
-
-//CvInvoke.FindContours(binaryAllContoursPlateMat, svgContours, svgMat, RetrType.External, ChainApproxMethod.ChainApproxSimple);
-
-
-//if (File.Exists("C:\\Users\\Randel\\source\\repos\\PlateScanner\\PlateScanner\\SVG"))
-//{
-//    File.Delete("C:\\Users\\Randel\\source\\repos\\PlateScanner\\PlateScanner\\SVG");
-//}
-//FileStorage fileStorage = new FileStorage("C:\\Users\\Randel\\source\\repos\\PlateScanner\\PlateScanner\\SVG", FileStorage.Mode.Write);
-
-
-//string svgText = $"<svg height='{this.PlateImage.Height}'> width='{this.PlateImage.Width}'>";
-
-//for (int i = 0; i < svgContours.Length; i++)
-//{
-//    svgText.Concat<>;
-//}
-// Begins the file freation process
-//var svgFile = File.Open("C:\\Users\\Randel\\source\\repos\\PlateScanner\\PlateScanner\\SVG", FileMode.Create);
-
-//svgFile.Write("<svg wi")
-
-//for (int i = 0; i < svgContours.Length; i++)
-//{
-
-//} 
-
-
-// closes/finished the file creation process
-//svgFile.Close();
-
-
-
-
-//try
-//{
-//StreamWriter sw = new StreamWriter("C:\\Users\\Randel\\source\\repos\\PlateScanner\\PlateScanner\\SVG");
-//sw.WriteLine($"<svg height='{this.PlateImage.Height}'> width='{this.PlateImage.Width}'>");
-//for (int i = 0; i < svgContours.Length; i++)
-//{
-//    for (int j = 0; j < svgContours[i].Length; j++)
-//    {
-//        Console.WriteLine(i.ToString() + " " + svgContours[i][j]);
-//        //sw.WriteLine(svgContours[i][j]);
-//    }
-//}
-//sw.Close();
-
-//}
-//catch (Exception e)
-//{
-//    Console.WriteLine("Exception" + e.Message);
-//    Console.ReadKey();
-//    throw;
-//}
