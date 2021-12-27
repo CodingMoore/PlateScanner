@@ -18,18 +18,6 @@ namespace PlateScanner
         {
             Console.WriteLine("Program Started");
 
-            string baseUrl = "http://skyserver.sdss.org/dr17/en/tools/search/x_results.aspx?searchtool=SQL&TaskName=Skyserver.Search.SQL&syntax=NoSyntax&ReturnHtml=true&cmd=";
-            string contentFormat = "&format=jsonx";
-
-            //SELECT
-            //plate, ObjId, s.cx, s.cy
-            //FROM PhotoObj AS p
-            //JOIN SpecObj AS s ON s.bestobjid = p.objid
-            //WHERE 
-            //s.plate = 2534
-
-
-
             // Defines the directory in which to look for the plate image files
             string imageImportDirectory = "C:\\Users\\Randel\\source\\repos\\PlateScanner\\PlateScanner\\Images\\";
 
@@ -83,10 +71,13 @@ namespace PlateScanner
                 // pulls the plate number from the file name, since every file should be named by its number.
                 string plateNumber = plate.FileName;
 
+                // creates an apiCallObject instance.
                 ApiCallObject apiCall = new ApiCallObject(plateNumber);
-                //ApiCallObject apiCall = new ApiCallObject("https://jsonplaceholder.typicode.com/", "todos/1");
 
+                // Makes the API call
                 apiCall.MakeTheApiCall();
+
+                Console.WriteLine("Plate " + plateNumber + " " + "has been completed");
             }
 
             Console.WriteLine("Program Finished");
