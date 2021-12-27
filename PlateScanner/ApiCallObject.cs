@@ -15,20 +15,27 @@ namespace PlateScanner
 {
     class ApiCallObject
     {
-        // SDSS API URL   - https://skyserver.sdss.org/dr16/SkyServerWS/SearchTools/SqlSearch?
-        // Example Search - https://skyserver.sdss.org/dr16/SkyServerWS/SearchTools/SqlSearch?cmd=select%20top%2010%20ra,dec%20from%20Frame&format=json
-
-        public string Url { get; set; }
-        public string UrlParameters { get; set; }
+        public string BaseUrl { get; set; }
+        public string QueryString { get; set; }
+        public string EncodedQueryString { get; set; }
+        public string ContentFormat { get; set; }
+        public string EncodedUrl { get; set; }
         public string ApiResponse { get; set; }
 
-        //string path = "https://skyserver.sdss.org/dr16/SkyServerWS/SearchTools/SqlSearch?cmd=select%20top%2010%20ra,dec%20from%20Frame&format=json";
-
-
-        public ApiCallObject(string url, string urlParameters)
+        public ApiCallObject(string plateNumber)
         {
-            Url = url;
-            UrlParameters = urlParameters;
+            BaseUrl = "http://skyserver.sdss.org/dr17/en/tools/search/x_results.aspx?searchtool=SQL&TaskName=Skyserver.Search.SQL&syntax=NoSyntax&ReturnHtml=true&cmd=";
+            QueryString = "" +
+                     "SELECT" + " " +
+                     "plate, ObjId, s.cx, s.cy" + " " +
+                     "FROM" + " " +
+                     "PhotoObj AS p" + " " +
+                     "JOIN" + " " +
+                     "SpecObj AS s ON s.bestobjid = p.objid" + " " +
+                     "WHERE" + " " +
+                    $"s.plate = {plateNumber}";
+            EncodedQueryString = HttpUtility.UrlEncode(this.QueryString);
+            ContentFormat = "&format=jsonx";
             ApiResponse = String.Empty;
         }
 
@@ -36,12 +43,7 @@ namespace PlateScanner
         {
 
             var client = new RestClient();
-            var request = new RestRequest(this.Url + UrlParameters);
-
-            //request.AddQueryParameter("UrlParameters", this.UrlParameters);
-
-            //Console.WriteLine("Request GetType" + ": " + request.GetType);
-            //Console.WriteLine(this.Url + this.UrlParameters);
+            var request = new RestRequest(this.BaseUrl + this.EncodedQueryString + this.ContentFormat);
 
             var response = client.ExecuteAsync(request, Method.GET).GetAwaiter().GetResult();
 
@@ -59,9 +61,8 @@ namespace PlateScanner
                 this.ApiResponse = response.Content;
             }
 
-            string myUrlString = "SELECT plate, ObjId, s.cx, s.cy FROM PhotoObj AS p JOIN SpecObj AS s ON s.bestobjid = p.objid WHERE s.plate <= 2534 AND s.plate >= 2533";
-            string myEncodedString = HttpUtility.UrlEncode(myUrlString);
-            Console.WriteLine(myEncodedString);
+            Console.WriteLine("EncodedQueryString" + this.EncodedQueryString);
+            Console.WriteLine(this.BaseUrl + this.EncodedQueryString + this.ContentFormat);
             Console.WriteLine(this.ApiResponse);
 
         }
