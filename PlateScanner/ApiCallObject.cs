@@ -10,6 +10,7 @@ using RestSharp;
 using RestSharp.Authenticators;
 using RestSharp.Extensions;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace PlateScanner
 {
@@ -20,26 +21,27 @@ namespace PlateScanner
         public string EncodedQueryString { get; set; }
         public string ContentFormat { get; set; }
         public string EncodedUrl { get; set; }
-        public string ApiResponse { get; set; }
+        public dynamic ApiResponse { get; set; }
 
         public ApiCallObject(string plateNumber)
         {
             BaseUrl = "http://skyserver.sdss.org/dr17/en/tools/search/x_results.aspx?searchtool=SQL&TaskName=Skyserver.Search.SQL&syntax=NoSyntax&ReturnHtml=true&cmd=";
             QueryString = "" +
-                     "SELECT" + " " +
-                     "plate, ObjId, s.cx, s.cy" + " " +
-                     "FROM" + " " +
-                     "PhotoObj AS p" + " " +
-                     "JOIN" + " " +
-                     "SpecObj AS s ON s.bestobjid = p.objid" + " " +
-                     "WHERE" + " " +
-                    $"s.plate = {plateNumber}";
+                "SELECT" + " " +
+                "plate, ObjId, xFocal, yFocal" + " " +
+                "FROM" + " " +
+                "PhotoObj AS p" + " " +
+                "JOIN" + " " +
+                "SpecObj AS s ON s.bestobjid = p.objid" + " " +
+                "WHERE" + " " +
+               $"s.plate = {plateNumber}" + " " +
+                "Order by xFocal asc";
             EncodedQueryString = HttpUtility.UrlEncode(this.QueryString);
             ContentFormat = "&format=jsonx";
-            ApiResponse = String.Empty;
+            ApiResponse = null;
         }
 
-        public void MakeTheApiCall()
+        public Dictionary<string, int[]> MakeTheApiCall()
         {
 
             var client = new RestClient();
@@ -57,13 +59,33 @@ namespace PlateScanner
             else
             {
                 Console.WriteLine("Response status code: " + response.StatusCode);
-                //Console.WriteLine(response.StatusCode);
-                this.ApiResponse = response.Content;
+
+                // deserializes json response
+                this.ApiResponse = JsonConvert.DeserializeObject(response.Content);
             }
 
-            Console.WriteLine("EncodedQueryString" + this.EncodedQueryString);
-            Console.WriteLine(this.BaseUrl + this.EncodedQueryString + this.ContentFormat);
-            Console.WriteLine(this.ApiResponse);
+            //Console.WriteLine("EncodedQueryString" + this.EncodedQueryString);
+            //Console.WriteLine(this.BaseUrl + this.EncodedQueryString + this.ContentFormat);
+            //Console.WriteLine(this.ApiResponse);
+
+            Dictionary<string, int[]> stellarObjectData = new Dictionary<string, int[]> { };
+
+            //foreach (var stellarObject in this.ApiResponse[0]["TableName"] == "Table1") 
+            //{
+            //    stellarObjectData.Add(stellarObject[0] Key["ObjId"], [stellarObject["xFocal"], sellarObject["yFocal"]]);
+            //}
+
+            
+            foreach(var item in this.ApiResponse[0]["Rows"])
+            {
+                string objectIdAsString = item["ObjId"].ToString();
+                int[] xYArray = new int[] { item["xFocal"], item["yFocal"] };
+
+                stellarObjectData.Add(objectIdAsString, xYArray);
+            }
+
+            return stellarObjectData;
+
 
         }
         
@@ -125,6 +147,16 @@ namespace PlateScanner
 //SpecObjAll AS s ON s.specObjID = p.specObjID
 //WHERE 
 //s.plate = 2534
+
+//"SELECT" + " " +
+//                     "plate, ObjId, xFocal, yFocal" + " " +
+//                     "FROM" + " " +
+//                     "PhotoObj AS p" + " " +
+//                     "JOIN" + " " +
+//                     "SpecObj AS s ON s.bestobjid = p.objid" + " " +
+//                     "WHERE" + " " +
+//                    $"s.plate = {plateNumber}" + " " +
+//                     "Order by xFocal asc";
 
 
 //Primary Keys

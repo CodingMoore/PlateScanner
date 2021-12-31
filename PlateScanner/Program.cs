@@ -58,7 +58,7 @@ namespace PlateScanner
                 List<int[]> centerAndRadius = plate.FindContoursCenterAndRadius(binaryPlateImage);
 
                 // Creates SVG file from contours (and saves it to disk), and returns the svg as a string so we can make an Html file with it.
-                string svgString = plate.CreateSVG(centerAndRadius);
+                string svgString = plate.CreateSvgFromPhoto(centerAndRadius);
 
                 // Creates an Html file based on the htmlString
                 plate.CreateHtml(svgString);
@@ -75,7 +75,9 @@ namespace PlateScanner
                 ApiCallObject apiCall = new ApiCallObject(plateNumber);
 
                 // Makes the API call
-                apiCall.MakeTheApiCall();
+                Dictionary<string, int[]> stellarObjectData = apiCall.MakeTheApiCall();
+
+
 
                 Console.WriteLine("Plate " + plateNumber + " " + "has been completed");
             }

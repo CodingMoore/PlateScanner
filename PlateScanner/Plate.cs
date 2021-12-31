@@ -302,7 +302,7 @@ namespace PlateScanner
 
         }
 
-        public string CreateSVG(List<int[]> centerAndRadius)
+        public string CreateSvgFromPhoto(List<int[]> centerAndRadius)
         {
             // Creates a new StringBuilder object
             var svgStringBuilder = new StringBuilder();
