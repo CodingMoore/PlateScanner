@@ -380,5 +380,82 @@ namespace PlateScanner
 
         }
 
+        public string CreateSvgFromApiCoordinates(Dictionary<int, string[]> stellarObjectData)
+        {
+            // Creates a new StringBuilder object
+            var svgStringBuilder = new StringBuilder();
+
+            // Creates our opening and closing svg strings to be tacked on to the Stringbuilder
+            string svgOpen = "<svg width = '100vw' height = '100vh'>";
+            string svgClose = "</svg>";
+
+            // Adds the opening SVG string to the Stringbuilder
+            svgStringBuilder.Append(svgOpen);
+
+            // for every center and radius in our list, create a sub string to be use the the svg file
+            for (int i = 0; i < stellarObjectData.Count; i++)
+            {
+                svgStringBuilder.Append(
+                    $"<a  href='https://techspot.com' target='_blank'> " +
+                    $"<circle cx='{stellarObjectData[i][0]}' cy='{stellarObjectData[i][1]}' r='{"2"}' stroke='black' stroke-width='1' fill='red'/>" +
+                    $"{stellarObjectData[i][2]}, plate: {stellarObjectData[i][3]}</a>"
+                );
+            }
+
+            // Adds the closing SVG strign to the String Builder
+            svgStringBuilder.Append(svgClose);
+
+            // Converts the Stringbuilder to a string
+            string svgString = svgStringBuilder.ToString();
+
+            // Creates the file directory if the directory does not already exist.  If the directory does already exist, this method does nothing.
+            this.SvgFilePath.Directory.Create();
+
+            // Writes the svg file to disk based on the svgString
+            File.WriteAllText($"{this.SvgFilePath}{this.FileName}v2.svg", svgString);
+
+            return svgString;
+        }
+
+        public void CreateHtmlFromSvgFromApi(string svgStringFromApi)
+        {
+            // Creates a new StringBuilder object
+            StringBuilder htmlStringBuilder = new StringBuilder();
+
+            // Creates our opening and closing html strings to be tacked on to the Stringbuilder
+            string htmlOpen = "" +
+                "<!DOCTYPE html>" +
+                "<html lang='en'>" +
+                "<head>" +
+                    "<meta charset='UTF-8'>" +
+                    "<meta http-equiv='X-UA-Compatible' content='IE=edge'>" +
+                    "<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
+                    "<title>Document</title>" +
+                "</head>" +
+                "<body>" +
+                    "<h1>Test!</h1>" +
+                "";
+
+            string htmlClose = "" +
+                "</body>" +
+                "</html>" +
+                "";
+
+            // Adds the opening html string, then the svgString, and finally the closing html string to the Stringbuilder
+            htmlStringBuilder.Append(htmlOpen);
+            htmlStringBuilder.Append(svgStringFromApi);
+            htmlStringBuilder.Append(htmlClose);
+
+            // Converts the Stringbuilder to a string
+            string htmlString = htmlStringBuilder.ToString();
+
+            // Creates the file directory if the directory does not already exist.  If the directory does already exist, this method does nothing.
+            this.HtmlFilePath.Directory.Create();
+
+            // Writes the html file to disk based on the htmlString, which in turn is based partially on the svgString
+            File.WriteAllText($"{this.HtmlFilePath}\\index2.html", htmlString);
+
+        }
+
     }
 }

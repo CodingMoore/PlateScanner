@@ -75,8 +75,11 @@ namespace PlateScanner
                 ApiCallObject apiCall = new ApiCallObject(plateNumber);
 
                 // Makes the API call
-                Dictionary<string, int[]> stellarObjectData = apiCall.MakeTheApiCall();
+                Dictionary<int, string[]> stellarObjectData = apiCall.MakeTheApiCall();
 
+                string svgStringFromApi = plate.CreateSvgFromApiCoordinates(stellarObjectData);
+
+                plate.CreateHtmlFromSvgFromApi(svgStringFromApi);
 
 
                 Console.WriteLine("Plate " + plateNumber + " " + "has been completed");

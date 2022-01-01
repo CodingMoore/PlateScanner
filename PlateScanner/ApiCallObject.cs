@@ -41,7 +41,7 @@ namespace PlateScanner
             ApiResponse = null;
         }
 
-        public Dictionary<string, int[]> MakeTheApiCall()
+        public Dictionary<int, string[]> MakeTheApiCall()
         {
 
             var client = new RestClient();
@@ -68,21 +68,35 @@ namespace PlateScanner
             //Console.WriteLine(this.BaseUrl + this.EncodedQueryString + this.ContentFormat);
             //Console.WriteLine(this.ApiResponse);
 
-            Dictionary<string, int[]> stellarObjectData = new Dictionary<string, int[]> { };
+            Dictionary<int, string[]> stellarObjectData = new Dictionary<int, string[]> { };
 
             //foreach (var stellarObject in this.ApiResponse[0]["TableName"] == "Table1") 
             //{
             //    stellarObjectData.Add(stellarObject[0] Key["ObjId"], [stellarObject["xFocal"], sellarObject["yFocal"]]);
             //}
 
-            
-            foreach(var item in this.ApiResponse[0]["Rows"])
-            {
-                string objectIdAsString = item["ObjId"].ToString();
-                int[] xYArray = new int[] { item["xFocal"], item["yFocal"] };
+            int pointCoordinateScaler = 2;
 
-                stellarObjectData.Add(objectIdAsString, xYArray);
+            for (int i = 0; i < this.ApiResponse[0]["Rows"].Count; i++)
+            {
+
+                    string[] objectDataString = new string[] { 
+                        this.ApiResponse[0]["Rows"][i]["xFocal"]*pointCoordinateScaler.ToString(), 
+                        this.ApiResponse[0]["Rows"][i]["yFocal"]*pointCoordinateScaler.ToString(), 
+                        this.ApiResponse[0]["Rows"][i]["ObjId"].ToString(), 
+                        this.ApiResponse[0]["Rows"][i]["plate"].ToString() 
+                    };
+
+                    stellarObjectData.Add(i, objectDataString);
             }
+            
+            //foreach(var item in this.ApiResponse[0]["Rows"])
+            //{
+            //    string objectIdAsString = item["ObjId"].ToString();
+            //    string[] xYArray = new string[] { item["xFocal"].ToString(), item["yFocal"].ToString() };
+
+            //    stellarObjectData.Add(objectIdAsString, xYArray);
+            //}
 
             return stellarObjectData;
 
