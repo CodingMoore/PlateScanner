@@ -75,16 +75,16 @@ namespace PlateScanner
             //    stellarObjectData.Add(stellarObject[0] Key["ObjId"], [stellarObject["xFocal"], sellarObject["yFocal"]]);
             //}
 
-            int pointCoordinateScaler = 2;
+
 
             for (int i = 0; i < this.ApiResponse[0]["Rows"].Count; i++)
             {
 
                     string[] objectDataString = new string[] { 
-                        this.ApiResponse[0]["Rows"][i]["xFocal"]*pointCoordinateScaler.ToString(), 
-                        this.ApiResponse[0]["Rows"][i]["yFocal"]*pointCoordinateScaler.ToString(), 
+                        this.ApiResponse[0]["Rows"][i]["xFocal"].ToString(), 
+                        this.ApiResponse[0]["Rows"][i]["yFocal"].ToString(), 
                         this.ApiResponse[0]["Rows"][i]["ObjId"].ToString(), 
-                        this.ApiResponse[0]["Rows"][i]["plate"].ToString() 
+                        this.ApiResponse[0]["Rows"][i]["plate"].ToString(),
                     };
 
                     stellarObjectData.Add(i, objectDataString);

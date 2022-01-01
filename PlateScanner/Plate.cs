@@ -385,19 +385,36 @@ namespace PlateScanner
             // Creates a new StringBuilder object
             var svgStringBuilder = new StringBuilder();
 
+            // Creates a Scaling Multiplier to adjust the distance between circles on the svg, as well as the viewbox size 
+            int plateScalingMultiplier = 2;
+
+            // Creates Viewbox Size variables
+            int xViewBoxMin = 0 * plateScalingMultiplier;
+            int yViewBoxMin = 0 * plateScalingMultiplier;
+            int xViewBoxMax = 700 * plateScalingMultiplier;
+            int yViewBoxMax = 700 * plateScalingMultiplier;
+
+
             // Creates our opening and closing svg strings to be tacked on to the Stringbuilder
-            string svgOpen = "<svg width = '100vw' height = '100vh'>";
-            string svgClose = "</svg>";
+            string svgOpen = $"<svg width = '100%' height = '100%' viewBox='{xViewBoxMin} {yViewBoxMin} {xViewBoxMax} {yViewBoxMax}'> <g>";
+            string svgClose = "</g></svg>";
 
             // Adds the opening SVG string to the Stringbuilder
             svgStringBuilder.Append(svgOpen);
 
+
             // for every center and radius in our list, create a sub string to be use the the svg file
             for (int i = 0; i < stellarObjectData.Count; i++)
             {
+                double cxScaledAndTranslatedInt = (double.Parse(stellarObjectData[i][0]) * plateScalingMultiplier) + (350 * plateScalingMultiplier);
+                double cyScaledAndTranslatedInt = (double.Parse(stellarObjectData[i][1]) * plateScalingMultiplier) + (350 * plateScalingMultiplier);
+
+                string cxScaledAndTranslatedString = cxScaledAndTranslatedInt.ToString();
+                string cyScaledAndTranslatedString = cyScaledAndTranslatedInt.ToString();
+
                 svgStringBuilder.Append(
                     $"<a  href='https://techspot.com' target='_blank'> " +
-                    $"<circle cx='{stellarObjectData[i][0]}' cy='{stellarObjectData[i][1]}' r='{"2"}' stroke='black' stroke-width='1' fill='red'/>" +
+                    $"<circle cx='{cxScaledAndTranslatedString}' cy='{cyScaledAndTranslatedString}' r='{"2"}' stroke='black' stroke-width='1' fill='red'/>" +
                     $"{stellarObjectData[i][2]}, plate: {stellarObjectData[i][3]}</a>"
                 );
             }
@@ -434,9 +451,11 @@ namespace PlateScanner
                 "</head>" +
                 "<body>" +
                     "<h1>Test!</h1>" +
-                "";
+                    "<div style = 'display: flex; justify-content: center; align-items: center;' >" +
+                 "";
 
             string htmlClose = "" +
+                    "</div>" +
                 "</body>" +
                 "</html>" +
                 "";
