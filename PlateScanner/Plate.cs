@@ -385,6 +385,9 @@ namespace PlateScanner
             // Creates a new StringBuilder object
             var svgStringBuilder = new StringBuilder();
 
+            // Creates the a scaling multiplier to adjust the zoom of the object image on the sdss website
+            string photoScaler = ".5";
+
             // Creates a Scaling Multiplier to adjust the distance between circles on the svg, as well as the viewbox size 
             int plateScalingMultiplier = 2;
 
@@ -393,7 +396,6 @@ namespace PlateScanner
             int yViewBoxMin = 0 * plateScalingMultiplier;
             int xViewBoxMax = 700 * plateScalingMultiplier;
             int yViewBoxMax = 700 * plateScalingMultiplier;
-
 
             // Creates our opening and closing svg strings to be tacked on to the Stringbuilder
             string svgOpen = $"<svg width = '100%' height = '100%' viewBox='{xViewBoxMin} {yViewBoxMin} {xViewBoxMax} {yViewBoxMax}'> <g>";
@@ -413,7 +415,7 @@ namespace PlateScanner
                 string cyScaledAndTranslatedString = cyScaledAndTranslatedInt.ToString();
 
                 svgStringBuilder.Append(
-                    $"<a  href='https://techspot.com' target='_blank'> " +
+                    $"<a  href='https://skyserver.sdss.org/dr17/VisualTools/navi?ra={stellarObjectData[i][4]}&dec={stellarObjectData[i][5]}&scale={photoScaler}' target='_blank'> " +
                     $"<circle cx='{cxScaledAndTranslatedString}' cy='{cyScaledAndTranslatedString}' r='{"2"}' stroke='black' stroke-width='1' fill='red'/>" +
                     $"{stellarObjectData[i][2]}, plate: {stellarObjectData[i][3]}</a>"
                 );

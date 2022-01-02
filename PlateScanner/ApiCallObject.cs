@@ -28,7 +28,7 @@ namespace PlateScanner
             BaseUrl = "http://skyserver.sdss.org/dr17/en/tools/search/x_results.aspx?searchtool=SQL&TaskName=Skyserver.Search.SQL&syntax=NoSyntax&ReturnHtml=true&cmd=";
             QueryString = "" +
                 "SELECT" + " " +
-                "plate, ObjId, xFocal, yFocal" + " " +
+                "plate, ObjId, xFocal, yFocal, s.ra, s.dec" + " " +
                 "FROM" + " " +
                 "PhotoObj AS p" + " " +
                 "JOIN" + " " +
@@ -60,6 +60,7 @@ namespace PlateScanner
             {
                 Console.WriteLine("Response status code: " + response.StatusCode);
 
+                Console.WriteLine(response.Content);
                 // deserializes json response
                 this.ApiResponse = JsonConvert.DeserializeObject(response.Content);
             }
@@ -85,6 +86,8 @@ namespace PlateScanner
                         this.ApiResponse[0]["Rows"][i]["yFocal"].ToString(), 
                         this.ApiResponse[0]["Rows"][i]["ObjId"].ToString(), 
                         this.ApiResponse[0]["Rows"][i]["plate"].ToString(),
+                        this.ApiResponse[0]["Rows"][i]["ra"].ToString(),
+                        this.ApiResponse[0]["Rows"][i]["dec"].ToString(),
                     };
 
                     stellarObjectData.Add(i, objectDataString);
@@ -171,6 +174,25 @@ namespace PlateScanner
 //                     "WHERE" + " " +
 //                    $"s.plate = {plateNumber}" + " " +
 //                     "Order by xFocal asc";
+
+
+// Working option
+
+//BaseUrl = "http://skyserver.sdss.org/dr17/en/tools/search/x_results.aspx?searchtool=SQL&TaskName=Skyserver.Search.SQL&syntax=NoSyntax&ReturnHtml=true&cmd=";
+//QueryString = "" +
+//    "SELECT" + " " +
+//    "plate, ObjId, xFocal, yFocal, s.ra, s.dec" + " " +
+//    "FROM" + " " +
+//    "PhotoObj AS p" + " " +
+//    "JOIN" + " " +
+//    "SpecObj AS s ON s.bestobjid = p.objid" + " " +
+//    "WHERE" + " " +
+//   $"s.plate = {plateNumber}" + " " +
+//    "Order by xFocal asc";
+//EncodedQueryString = HttpUtility.UrlEncode(this.QueryString);
+//ContentFormat = "&format=jsonx";
+//ApiResponse = null;
+
 
 
 //Primary Keys
