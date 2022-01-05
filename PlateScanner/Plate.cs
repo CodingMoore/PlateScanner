@@ -398,7 +398,7 @@ namespace PlateScanner
             int yViewBoxMax = 700 * plateScalingMultiplier;
 
             // Creates our opening and closing svg strings to be tacked on to the Stringbuilder
-            string svgOpen = $"<svg width = '100%' height = '100%' viewBox='{xViewBoxMin} {yViewBoxMin} {xViewBoxMax} {yViewBoxMax}'> <g>";
+            string svgOpen = $"<svg width = '100%' height = '100%' viewBox='{xViewBoxMin} {yViewBoxMin} {xViewBoxMax} {yViewBoxMax}' overflow='hidden'> <g>";
             string svgClose = "</g></svg>";
 
             // Adds the opening SVG string to the Stringbuilder
