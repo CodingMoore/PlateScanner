@@ -463,6 +463,8 @@ namespace PlateScanner
                         // the below reads like it has a "const" at the beginning because of the comma from the above line.
                         "panzoom = Panzoom(element, {" +
                         // options here
+                        "maxScale: 50," +
+                        "minScale: .75" +
                         "});" +
                         // enable mouse wheel
                         "const parent = element.parentElement;" +
