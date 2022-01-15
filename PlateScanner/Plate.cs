@@ -354,7 +354,7 @@ namespace PlateScanner
                     "<meta http-equiv='X-UA-Compatible' content='IE=edge'>" +
                     "<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
                     "<title>Document</title>" +
-                "</head>" +
+                 "</head>" +
                 "<body>" +
                     "<h1>Test!</h1>" +
                 "";
@@ -398,8 +398,8 @@ namespace PlateScanner
             int yViewBoxMax = 700 * plateScalingMultiplier;
 
             // Creates our opening and closing svg strings to be tacked on to the Stringbuilder
-            string svgOpen = $"<svg width = '100%' height = '100%' viewBox='{xViewBoxMin} {yViewBoxMin} {xViewBoxMax} {yViewBoxMax}' overflow='hidden'> <g>";
-            string svgClose = "</g></svg>";
+            string svgOpen = $"<svg id='svgImage' width='100vw' height='100vh' viewBox='{xViewBoxMin} {yViewBoxMin} {xViewBoxMax} {yViewBoxMax}' transform-origin='0 0'>";
+            string svgClose = "</svg>";
 
             // Adds the opening SVG string to the Stringbuilder
             svgStringBuilder.Append(svgOpen);
@@ -450,14 +450,24 @@ namespace PlateScanner
                     "<meta http-equiv='X-UA-Compatible' content='IE=edge'>" +
                     "<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
                     "<title>Document</title>" +
+                    "<script src='https://www.unpkg.com/@panzoom/panzoom/dist/panzoom.js'></script>" +
                 "</head>" +
                 "<body>" +
-                    "<h1>Test!</h1>" +
-                    "<div style = 'display: flex; justify-content: center; align-items: center;' >" +
+                    "<div id='svgWrapper' style='display: flex; justify-content: center; align-items: center'>" +
                  "";
 
             string htmlClose = "" +
                     "</div>" +
+                    "<script> " +
+                        "const element = document.getElementById('svgWrapper')," +
+                        // the below reads like it has a "const" at the beginning because of the comma from the above line.
+                        "panzoom = Panzoom(element, {" +
+                        // options here
+                        "});" +
+                        // enable mouse wheel
+                        "const parent = element.parentElement;" +
+                        "parent.addEventListener('wheel', panzoom.zoomWithWheel);" +
+                    "</script>" +
                 "</body>" +
                 "</html>" +
                 "";

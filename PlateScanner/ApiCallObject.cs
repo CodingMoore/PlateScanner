@@ -60,7 +60,7 @@ namespace PlateScanner
             {
                 Console.WriteLine("Response status code: " + response.StatusCode);
 
-                Console.WriteLine(response.Content);
+                //Console.WriteLine(response.Content);
                 // deserializes json response
                 this.ApiResponse = JsonConvert.DeserializeObject(response.Content);
             }
