@@ -340,7 +340,7 @@ namespace PlateScanner
 
         }
 
-        /*public void CreateHtml(string svgString)
+        public void CreateHtml(string svgString)
         {
             // Creates a new StringBuilder object
             StringBuilder htmlStringBuilder = new StringBuilder();
@@ -373,12 +373,12 @@ namespace PlateScanner
             string htmlString = htmlStringBuilder.ToString();
 
             // Creates the file directory if the directory does not already exist.  If the directory does already exist, this method does nothing.
-            this.HtmlFilePath.Directory.Create(); 
+            this.HtmlFilePath.Directory.Create();
 
             // Writes the html file to disk based on the htmlString, which in turn is based partially on the svgString
             File.WriteAllText($"{this.HtmlFilePath}\\index.html", htmlString);
 
-        }*/
+        }
 
         public string CreateSvgFromApiCoordinates(Dictionary<int, string[]> stellarObjectData)
         {

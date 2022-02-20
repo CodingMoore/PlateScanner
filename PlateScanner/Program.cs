@@ -61,7 +61,7 @@ namespace PlateScanner
                 string svgString = plate.CreateSvgFromPhoto(centerAndRadius);
 
                 // Creates an Html file based on the htmlString
-                //plate.CreateHtml(svgString);
+                plate.CreateHtml(svgString);
 
                 // Display the plate image
                 //ImageViewer viewer = new ImageViewer(binaryAllContoursPlateMat);
