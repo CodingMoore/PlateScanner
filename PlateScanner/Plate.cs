@@ -415,7 +415,8 @@ namespace PlateScanner
                 string cyScaledAndTranslatedString = cyScaledAndTranslatedInt.ToString();
 
                 svgStringBuilder.Append(
-                    $"<a href='https://skyserver.sdss.org/dr17/VisualTools/navi?ra={stellarObjectData[i][4]}&dec={stellarObjectData[i][5]}&scale={photoScaler}' target='_blank'> " +
+                    // Ampersands "&" in the href query string have been replaced with "&amp;" since a regular Ampersand is a escapement character in XML (svg).
+                    $"<a href='https://skyserver.sdss.org/dr17/VisualTools/navi?ra={stellarObjectData[i][4]}&amp;dec={stellarObjectData[i][5]}&amp;scale={photoScaler}' target='_blank'> " +
                     $"<circle cx='{cxScaledAndTranslatedString}' cy='{cyScaledAndTranslatedString}' r='{"2"}' stroke='black' stroke-width='1' fill='red'/>" +
                     $"{stellarObjectData[i][2]}, plate: {stellarObjectData[i][3]}</a>"
                 );
