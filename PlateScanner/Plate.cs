@@ -388,28 +388,38 @@ namespace PlateScanner
             // Creates the a scaling multiplier to adjust the zoom of the object image on the sdss website
             string photoScaler = ".5";
 
-            // Creates a Scaling Multiplier to adjust the distance between circles on the svg, as well as the viewbox size 
+            // Creates a Scaling Multiplier to adjust the viewbox size while keeping the location of the svg contents scaled to match.
             int plateScalingMultiplier = 2;
+
+            // Creates the radius of the dots on the plate.  The ratio of this number to the plateScalingMulitplier affect the proportional dot size.
+            int svgDotRadius = 2;
 
             // Creates Viewbox Size variables
             int xViewBoxMin = 0 * plateScalingMultiplier;
             int yViewBoxMin = 0 * plateScalingMultiplier;
-            int xViewBoxMax = 700 * plateScalingMultiplier;
-            int yViewBoxMax = 700 * plateScalingMultiplier;
+            int xViewBoxMax = 800 * plateScalingMultiplier;
+            int yViewBoxMax = 800 * plateScalingMultiplier;
+
+            // Creates PlateEdge Size variables
+            int xSvgPlateCenter = xViewBoxMax / 2;
+            int ySvgPlateCenter = yViewBoxMax / 2;
+            int SvgPlateRadius = 394 * plateScalingMultiplier;
 
             // Creates our opening and closing svg strings to be tacked on to the Stringbuilder
             string svgOpen = $"<svg id='svgImage' width='100vw' height='100vh' viewBox='{xViewBoxMin} {yViewBoxMin} {xViewBoxMax} {yViewBoxMax}' transform-origin='0 0'>";
+            string svgPlateEdge = $"<circle cx='{xSvgPlateCenter}' cy='{ySvgPlateCenter}' r='{SvgPlateRadius}' strok='grey' stroke-width='1' />";
             string svgClose = "</svg>";
 
             // Adds the opening SVG string to the Stringbuilder
             svgStringBuilder.Append(svgOpen);
+            svgStringBuilder.Append(svgPlateEdge);
 
 
             // for every center and radius in our list, create a sub string to be use the the svg file
             for (int i = 0; i < stellarObjectData.Count; i++)
             {
-                double cxScaledAndTranslatedInt = (double.Parse(stellarObjectData[i][0]) * plateScalingMultiplier) + (350 * plateScalingMultiplier);
-                double cyScaledAndTranslatedInt = (double.Parse(stellarObjectData[i][1]) * plateScalingMultiplier) + (350 * plateScalingMultiplier);
+                double cxScaledAndTranslatedInt = (double.Parse(stellarObjectData[i][0]) * plateScalingMultiplier) + (400 * plateScalingMultiplier);
+                double cyScaledAndTranslatedInt = (double.Parse(stellarObjectData[i][1]) * plateScalingMultiplier) + (400 * plateScalingMultiplier);
 
                 string cxScaledAndTranslatedString = cxScaledAndTranslatedInt.ToString();
                 string cyScaledAndTranslatedString = cyScaledAndTranslatedInt.ToString();
@@ -417,7 +427,7 @@ namespace PlateScanner
                 svgStringBuilder.Append(
                     // Ampersands "&" in the href query string have been replaced with "&amp;" since a regular Ampersand is a escapement character in XML (svg).
                     $"<a href='https://skyserver.sdss.org/dr17/VisualTools/navi?ra={stellarObjectData[i][4]}&amp;dec={stellarObjectData[i][5]}&amp;scale={photoScaler}' target='_blank'> " +
-                    $"<circle cx='{cxScaledAndTranslatedString}' cy='{cyScaledAndTranslatedString}' r='{"2"}' stroke='black' stroke-width='1' fill='red'/>" +
+                    $"<circle cx='{cxScaledAndTranslatedString}' cy='{cyScaledAndTranslatedString}' r='{svgDotRadius}' stroke='black' stroke-width='1' fill='red'/>" +
                     $"{stellarObjectData[i][2]}, plate: {stellarObjectData[i][3]}</a>"
                 );
             }
