@@ -40,7 +40,7 @@ namespace PlateScanner
             SvgFilePath = new FileInfo($"{fileSavingDirectoryStart}svg Files\\");
 
             // Defines the full directory path for saving the file
-            HtmlFilePath = new FileInfo($"{fileSavingDirectoryStart}html Files\\{this.FileName}\\");
+            HtmlFilePath = new FileInfo($"{fileSavingDirectoryStart}html Files\\");
 
             PlateImage = new Image<Bgr, Byte>(file);
             OutputMat = null;
@@ -340,7 +340,7 @@ namespace PlateScanner
 
         }
 
-        public void CreateHtml(string svgString)
+        /*public void CreateHtml(string svgString)
         {
             // Creates a new StringBuilder object
             StringBuilder htmlStringBuilder = new StringBuilder();
@@ -378,7 +378,7 @@ namespace PlateScanner
             // Writes the html file to disk based on the htmlString, which in turn is based partially on the svgString
             File.WriteAllText($"{this.HtmlFilePath}\\index.html", htmlString);
 
-        }
+        }*/
 
         public string CreateSvgFromApiCoordinates(Dictionary<int, string[]> stellarObjectData)
         {
@@ -415,7 +415,7 @@ namespace PlateScanner
                 string cyScaledAndTranslatedString = cyScaledAndTranslatedInt.ToString();
 
                 svgStringBuilder.Append(
-                    $"<a  href='https://skyserver.sdss.org/dr17/VisualTools/navi?ra={stellarObjectData[i][4]}&dec={stellarObjectData[i][5]}&scale={photoScaler}' target='_blank'> " +
+                    $"<a href='https://skyserver.sdss.org/dr17/VisualTools/navi?ra={stellarObjectData[i][4]}&dec={stellarObjectData[i][5]}&scale={photoScaler}' target='_blank'> " +
                     $"<circle cx='{cxScaledAndTranslatedString}' cy='{cyScaledAndTranslatedString}' r='{"2"}' stroke='black' stroke-width='1' fill='red'/>" +
                     $"{stellarObjectData[i][2]}, plate: {stellarObjectData[i][3]}</a>"
                 );
@@ -431,7 +431,7 @@ namespace PlateScanner
             this.SvgFilePath.Directory.Create();
 
             // Writes the svg file to disk based on the svgString
-            File.WriteAllText($"{this.SvgFilePath}{this.FileName}v2.svg", svgString);
+            File.WriteAllText($"{this.SvgFilePath}{this.FileName}.svg", svgString);
 
             return svgString;
         }
@@ -486,7 +486,7 @@ namespace PlateScanner
             this.HtmlFilePath.Directory.Create();
 
             // Writes the html file to disk based on the htmlString, which in turn is based partially on the svgString
-            File.WriteAllText($"{this.HtmlFilePath}\\index2.html", htmlString);
+            File.WriteAllText($"{this.HtmlFilePath}{this.FileName}.html", htmlString);
 
         }
 
